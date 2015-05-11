@@ -220,9 +220,13 @@ angular.module('colorpicker.module', [])
           slider.left = event.pageX - targetOffset.left - window.pageXOffset + targetOffset.scrollX;
           slider.top = event.pageY - targetOffset.top - window.pageYOffset + targetOffset.scrollY;
 
+          // Polyfills for making https://github.com/buberdds/angular-bootstrap-colorpicker/issues/93 work properly
+          var offsetX = (event.offsetX || event.pageX - (event.target.offsetParent.offsetLeft + event.target.offsetLeft));
+          var offsetY = (event.offsetY || event.pageY - (event.target.offsetParent.offsetTop + event.target.offsetTop));
+
           pointer = {
-            left: event.pageX - ((event.offsetX ? event.offsetX : event.layerX) - slider.left),
-            top: event.pageY - ((event.offsetY ? event.offsetY : event.layerY) - slider.top)
+            left: event.pageX - (offsetX - slider.left),
+            top:  event.pageY - (offsetY - slider.top)
           };
         },
         setSaturation: function(event, fixedPosition) {
